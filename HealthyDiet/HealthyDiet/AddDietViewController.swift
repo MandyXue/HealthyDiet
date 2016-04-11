@@ -12,11 +12,19 @@ class AddDietViewController: UIViewController, UISearchBarDelegate, UISearchResu
     
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var resultTableView: UITableView!
+    
+    // MARK: - life circle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        searchBar.delegate = self
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(true)
+        // 直接显示键盘
+        searchBar.becomeFirstResponder()
     }
 
     override func didReceiveMemoryWarning() {
@@ -24,13 +32,29 @@ class AddDietViewController: UIViewController, UISearchBarDelegate, UISearchResu
         // Dispose of any resources that can be recreated.
     }
     
+    // MARK: - tableview data source
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = UITableViewCell()
+        return cell
+    }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return 0
     }
     
+    // MARK: - tableview delegate
+    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        <#code#>
+        print("selected")
     }
+    
+    // MARK: - search results updating
+    
+    func updateSearchResultsForSearchController(searchController: UISearchController) {
+        print("update")
+    }
+    
+    // MARK: - search bar delegate
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
         self.dismissViewControllerAnimated(true, completion: nil)

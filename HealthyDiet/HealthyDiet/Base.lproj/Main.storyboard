@@ -109,10 +109,6 @@
                             <searchBar contentMode="redraw" searchBarStyle="prominent" prompt="Input food name to search" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RNE-Uo-Cl3">
                                 <rect key="frame" x="0.0" y="20" width="600" height="75"/>
                                 <textInputTraits key="textInputTraits"/>
-                                <scopeButtonTitles>
-                                    <string>Title</string>
-                                    <string>Title</string>
-                                </scopeButtonTitles>
                                 <connections>
                                     <outlet property="delegate" destination="raa-we-IvO" id="YqK-To-6pi"/>
                                 </connections>
