@@ -1,23 +1,23 @@
 //
-//  DietTableViewController.swift
+//  DietDetailTableViewController.swift
 //  HealthyDiet
 //
-//  Created by MandyXue on 16/4/11.
+//  Created by MandyXue on 16/4/13.
 //  Copyright © 2016年 MandyXue. All rights reserved.
 //
 
 import UIKit
 
-class DietTableViewController: UITableViewController {
-    
-    let diets = [
-            ["itemName":"Apple Pie","itemCategory":"Snacks"],
-            ["itemName":"Pineapple Pie","itemCategory":"Snacks"]
-        ]
+class DietDetailTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
+        // Uncomment the following line to preserve selection between presentations
+        // self.clearsSelectionOnViewWillAppear = false
+
+        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
 
     override func didReceiveMemoryWarning() {
@@ -27,25 +27,46 @@ class DietTableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-//    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-//        // #warning Incomplete implementation, return the number of sections
-//        return 1
-//    }
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        // #warning Incomplete implementation, return the number of sections
+        return 3
+    }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return diets.count
+        return 3
     }
-
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("DietTableViewCell", forIndexPath: indexPath) as! DietTableViewCell
-        cell.itemName.text = diets[indexPath.row]["itemName"]
-        cell.itemCategory.text = diets[indexPath.row]["itemCategory"]
-
+        if (indexPath.section == 2) {
+            let cell = tableView.dequeueReusableCellWithIdentifier("recipeCell", forIndexPath: indexPath) as! RecipeTableViewCell
+            cell.recipeImage.image = UIImage(named: "defaultImage")
+            cell.recipeName.text = "recipe name testing bla bla bla"
+            cell.caloriesDetail.text = "1480"
+            cell.dailyValue.text = "74%"
+            return cell
+        } else if(indexPath.section == 1 || indexPath.section == 0) {
+            print("section:\(indexPath.section), row:\(indexPath.row)")
+            let cell = tableView.dequeueReusableCellWithIdentifier("attributeCell", forIndexPath: indexPath) as! DietAttributeTableViewCell
+            cell.attributeName.text = "attribute name"
+            cell.attributeDetail.text = "detail"
+            return cell
+        }
+        
+        let cell = UITableViewCell()
+        // Configure the cell...
         return cell
     }
     
+    // MARK: - tableview delegate
+    
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if (indexPath.section == 2) {
+            return 112.0
+        } else {
+            return 45.0
+        }
+    }
 
     /*
     // Override to support conditional editing of the table view.

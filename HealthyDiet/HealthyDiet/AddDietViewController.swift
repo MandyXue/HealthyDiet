@@ -13,18 +13,29 @@ class AddDietViewController: UIViewController, UISearchBarDelegate, UISearchResu
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var resultTableView: UITableView!
     
+    var dietList = ["Apple", "Apricot", "Banana", "Blueberry", "Cantaloupe", "Cherry",
+        "Clementine", "Coconut", "Cranberry", "Fig", "Grape", "Grapefruit",
+        "Kiwi fruit", "Lemon", "Lime", "Lychee", "Mandarine", "Mango",
+        "Melon", "Nectarine", "Olive", "Orange", "Papaya", "Peach",
+        "Pear", "Pineapple", "Raspberry", "Strawberry"]
+    
     // MARK: - life circle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         searchBar.delegate = self
+        resultTableView.delegate = self
+        resultTableView.dataSource = self
+        prepareData()
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
         // 直接显示键盘
-        searchBar.becomeFirstResponder()
+        
+        // TODO: searchbar有问题
+//        searchBar.becomeFirstResponder()
     }
 
     override func didReceiveMemoryWarning() {
@@ -35,11 +46,13 @@ class AddDietViewController: UIViewController, UISearchBarDelegate, UISearchResu
     // MARK: - tableview data source
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
+        let cell = tableView.dequeueReusableCellWithIdentifier("AddDietTableViewCell", forIndexPath: indexPath) 
+        cell.textLabel?.text = dietList[indexPath.row]
         return cell
     }
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return dietList.count
     }
     
     // MARK: - tableview delegate
@@ -62,6 +75,12 @@ class AddDietViewController: UIViewController, UISearchBarDelegate, UISearchResu
     
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
         // text did change
+    }
+    
+    // MARK: - helper
+    
+    func prepareData() {
+        // test data
     }
 
     /*
