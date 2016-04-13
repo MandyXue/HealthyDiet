@@ -112,15 +112,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <searchBar contentMode="redraw" searchBarStyle="prominent" prompt="Input food name to search" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RNE-Uo-Cl3">
-                                <rect key="frame" x="0.0" y="20" width="600" height="75"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <connections>
-                                    <outlet property="delegate" destination="raa-we-IvO" id="YqK-To-6pi"/>
-                                </connections>
-                            </searchBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="9XR-9s-1YH">
-                                <rect key="frame" x="0.0" y="95" width="600" height="505"/>
+                                <rect key="frame" x="0.0" y="20" width="600" height="580"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <view key="tableFooterView" contentMode="scaleToFill" id="IZJ-H4-24R">
                                     <rect key="frame" x="0.0" y="72" width="600" height="0.0"/>
@@ -155,18 +148,14 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="X0H-8B-3nf" firstAttribute="top" secondItem="9XR-9s-1YH" secondAttribute="bottom" id="8Gb-JK-Qzz"/>
-                            <constraint firstItem="9XR-9s-1YH" firstAttribute="top" secondItem="RNE-Uo-Cl3" secondAttribute="bottom" id="Ote-LY-Z7P"/>
+                            <constraint firstItem="9XR-9s-1YH" firstAttribute="top" secondItem="Eaq-gx-bfQ" secondAttribute="bottom" id="FZX-tn-4TF"/>
                             <constraint firstAttribute="trailingMargin" secondItem="9XR-9s-1YH" secondAttribute="trailing" constant="-20" id="Xt8-hg-VsN"/>
                             <constraint firstItem="9XR-9s-1YH" firstAttribute="leading" secondItem="bOP-Y5-tP3" secondAttribute="leadingMargin" constant="-20" id="jJC-Bi-aeP"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="RNE-Uo-Cl3" secondAttribute="trailing" constant="-20" id="oiQ-D4-nS0"/>
-                            <constraint firstItem="RNE-Uo-Cl3" firstAttribute="leading" secondItem="bOP-Y5-tP3" secondAttribute="leadingMargin" constant="-20" id="twu-Zj-mjG"/>
-                            <constraint firstItem="RNE-Uo-Cl3" firstAttribute="top" secondItem="Eaq-gx-bfQ" secondAttribute="bottom" id="zvu-ZU-5Lx"/>
                         </constraints>
                     </view>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="blackOpaque"/>
                     <connections>
                         <outlet property="resultTableView" destination="9XR-9s-1YH" id="vFA-xs-SfO"/>
-                        <outlet property="searchBar" destination="RNE-Uo-Cl3" id="gnb-NF-dLu"/>
                         <outlet property="searchDisplayController" destination="8tw-gT-asW" id="V6R-J5-7Zw"/>
                     </connections>
                 </viewController>
@@ -174,7 +163,6 @@
                 <searchDisplayController id="8tw-gT-asW">
                     <connections>
                         <outlet property="delegate" destination="raa-we-IvO" id="fCu-Ua-dQY"/>
-                        <outlet property="searchBar" destination="RNE-Uo-Cl3" id="vKy-eY-GBF"/>
                         <outlet property="searchContentsController" destination="raa-we-IvO" id="qbl-sV-vfI"/>
                         <outlet property="searchResultsDataSource" destination="raa-we-IvO" id="c6M-Mo-e9m"/>
                         <outlet property="searchResultsDelegate" destination="raa-we-IvO" id="YDN-tH-zcm"/>

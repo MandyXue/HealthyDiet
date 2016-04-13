@@ -10,8 +10,9 @@ import UIKit
 
 class AddDietViewController: UIViewController, UISearchBarDelegate, UISearchResultsUpdating, UITableViewDataSource, UITableViewDelegate {
     
-    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var resultTableView: UITableView!
+    
+    // TODO: 提供常用的名字，点击搜索后发送请求
     
     var dietList = ["Apple", "Apricot", "Banana", "Blueberry", "Cantaloupe", "Cherry",
         "Clementine", "Coconut", "Cranberry", "Fig", "Grape", "Grapefruit",
@@ -19,23 +20,30 @@ class AddDietViewController: UIViewController, UISearchBarDelegate, UISearchResu
         "Melon", "Nectarine", "Olive", "Orange", "Papaya", "Peach",
         "Pear", "Pineapple", "Raspberry", "Strawberry"]
     
+    let searchController = UISearchController(searchResultsController: nil)
+    var filteredDiets = [String]()
+    
     // MARK: - life circle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        searchBar.delegate = self
         resultTableView.delegate = self
         resultTableView.dataSource = self
         prepareData()
+        
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.searchBar.delegate = self
+        definesPresentationContext = true
+        resultTableView.tableHeaderView = searchController.searchBar
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
         // 直接显示键盘
         
-        // TODO: searchbar有问题
-//        searchBar.becomeFirstResponder()
+        searchController.searchBar.becomeFirstResponder()
     }
 
     override func didReceiveMemoryWarning() {
@@ -46,12 +54,23 @@ class AddDietViewController: UIViewController, UISearchBarDelegate, UISearchResu
     // MARK: - tableview data source
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("AddDietTableViewCell", forIndexPath: indexPath) 
-        cell.textLabel?.text = dietList[indexPath.row]
+        let cell = tableView.dequeueReusableCellWithIdentifier("AddDietTableViewCell", forIndexPath: indexPath)
+        
+        let diet:String
+        
+        if searchController.active && searchController.searchBar.text != "" {
+            diet = filteredDiets[indexPath.row]
+        } else {
+            diet = dietList[indexPath.row]
+        }
+        cell.textLabel?.text = diet
         return cell
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if searchController.active && searchController.searchBar.text != "" {
+            return filteredDiets.count
+        }
         return dietList.count
     }
     
@@ -64,7 +83,7 @@ class AddDietViewController: UIViewController, UISearchBarDelegate, UISearchResu
     // MARK: - search results updating
     
     func updateSearchResultsForSearchController(searchController: UISearchController) {
-        print("update")
+        filterContentForSearchText(searchController.searchBar.text!)
     }
     
     // MARK: - search bar delegate
@@ -81,6 +100,14 @@ class AddDietViewController: UIViewController, UISearchBarDelegate, UISearchResu
     
     func prepareData() {
         // test data
+    }
+    
+    func filterContentForSearchText(searchText: String) {
+        filteredDiets = dietList.filter { diet in
+            return diet.lowercaseString.containsString(searchText.lowercaseString)
+        }
+        
+        resultTableView.reloadData()
     }
 
     /*

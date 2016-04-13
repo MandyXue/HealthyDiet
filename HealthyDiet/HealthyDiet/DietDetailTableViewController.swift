@@ -9,6 +9,8 @@
 import UIKit
 
 class DietDetailTableViewController: UITableViewController {
+    
+    let header = ["Food Information", "Nutrients", "Recipes"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,6 +58,10 @@ class DietDetailTableViewController: UITableViewController {
         let cell = UITableViewCell()
         // Configure the cell...
         return cell
+    }
+    
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return header[section]
     }
     
     // MARK: - tableview delegate

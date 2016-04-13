@@ -7,13 +7,16 @@
 //
 
 import UIKit
+import CoreData
 
 class DietTableViewController: UITableViewController {
     
-    let diets = [
-            ["itemName":"Apple Pie","itemCategory":"Snacks"],
-            ["itemName":"Pineapple Pie","itemCategory":"Snacks"]
-        ]
+    let diets = [NSManagedObject]()
+    
+//    let diets = [
+//            ["itemName":"Apple Pie","itemCategory":"Snacks"],
+//            ["itemName":"Pineapple Pie","itemCategory":"Snacks"]
+//        ]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,21 +30,15 @@ class DietTableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-//    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-//        // #warning Incomplete implementation, return the number of sections
-//        return 1
-//    }
-
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return diets.count
     }
 
-    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("DietTableViewCell", forIndexPath: indexPath) as! DietTableViewCell
-        cell.itemName.text = diets[indexPath.row]["itemName"]
-        cell.itemCategory.text = diets[indexPath.row]["itemCategory"]
+        cell.itemName.text = diets[indexPath.row].valueForKey("itemName") as? String
+        cell.itemCategory.text = diets[indexPath.row].valueForKey("itemCategory") as? String
 
         return cell
     }

@@ -18,6 +18,8 @@
 		33FC7A371CBDF04500C7FA6F /* DietDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33FC7A361CBDF04500C7FA6F /* DietDetailTableViewController.swift */; };
 		33FC7A391CBDF0D000C7FA6F /* DietAttributeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33FC7A381CBDF0D000C7FA6F /* DietAttributeTableViewCell.swift */; };
 		33FC7A3B1CBDF0E100C7FA6F /* RecipeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33FC7A3A1CBDF0E100C7FA6F /* RecipeTableViewCell.swift */; };
+		33FC7A3E1CBE64FF00C7FA6F /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 33FC7A3C1CBE64FF00C7FA6F /* Model.xcdatamodeld */; };
+		33FC7A401CBEA32800C7FA6F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33FC7A3F1CBEA32800C7FA6F /* CoreData.framework */; };
 		4835D97650FDAB911C29F96D /* Pods_HealthyDiet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C36B76CAE1AEDA97ECB9A83 /* Pods_HealthyDiet.framework */; };
 		4E485773FC7D09199E5E7EB0 /* Pods_HealthyDietTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27411416D39D8ADFC3A772B7 /* Pods_HealthyDietTests.framework */; };
 /* End PBXBuildFile section */
@@ -49,6 +51,8 @@
 		33FC7A361CBDF04500C7FA6F /* DietDetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DietDetailTableViewController.swift; sourceTree = "<group>"; };
 		33FC7A381CBDF0D000C7FA6F /* DietAttributeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DietAttributeTableViewCell.swift; sourceTree = "<group>"; };
 		33FC7A3A1CBDF0E100C7FA6F /* RecipeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipeTableViewCell.swift; sourceTree = "<group>"; };
+		33FC7A3D1CBE64FF00C7FA6F /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		33FC7A3F1CBEA32800C7FA6F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		5766663781646433F2E86343 /* Pods-HealthyDietTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HealthyDietTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-HealthyDietTests/Pods-HealthyDietTests.release.xcconfig"; sourceTree = "<group>"; };
 		63671B2389FADF77DF3C9EF6 /* Pods-HealthyDiet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HealthyDiet.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HealthyDiet/Pods-HealthyDiet.debug.xcconfig"; sourceTree = "<group>"; };
 		8C36B76CAE1AEDA97ECB9A83 /* Pods_HealthyDiet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HealthyDiet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -61,6 +65,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				33FC7A401CBEA32800C7FA6F /* CoreData.framework in Frameworks */,
 				4835D97650FDAB911C29F96D /* Pods_HealthyDiet.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -106,6 +111,7 @@
 				3386AD0C1CBBAA3A00E1DB91 /* AddDietViewController.swift */,
 				3386AD081CBB90BA00E1DB91 /* DietTableViewController.swift */,
 				3386AD0A1CBB93D700E1DB91 /* DietTableViewCell.swift */,
+				33FC7A3C1CBE64FF00C7FA6F /* Model.xcdatamodeld */,
 				3386AD0E1CBC8F4200E1DB91 /* Supporting Files */,
 			);
 			path = HealthyDiet;
@@ -145,6 +151,7 @@
 		EB65BC41E4E505A52BD95EE5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				33FC7A3F1CBEA32800C7FA6F /* CoreData.framework */,
 				8C36B76CAE1AEDA97ECB9A83 /* Pods_HealthyDiet.framework */,
 				27411416D39D8ADFC3A772B7 /* Pods_HealthyDietTests.framework */,
 			);
@@ -356,6 +363,7 @@
 				3386AD0D1CBBAA3A00E1DB91 /* AddDietViewController.swift in Sources */,
 				3386ACE91CBB8C9100E1DB91 /* AppDelegate.swift in Sources */,
 				33FC7A371CBDF04500C7FA6F /* DietDetailTableViewController.swift in Sources */,
+				33FC7A3E1CBE64FF00C7FA6F /* Model.xcdatamodeld in Sources */,
 				33FC7A3B1CBDF0E100C7FA6F /* RecipeTableViewCell.swift in Sources */,
 				3386AD0B1CBB93D700E1DB91 /* DietTableViewCell.swift in Sources */,
 				33FC7A391CBDF0D000C7FA6F /* DietAttributeTableViewCell.swift in Sources */,
@@ -563,6 +571,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		33FC7A3C1CBE64FF00C7FA6F /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				33FC7A3D1CBE64FF00C7FA6F /* Model.xcdatamodel */,
+			);
+			currentVersion = 33FC7A3D1CBE64FF00C7FA6F /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 3386ACDD1CBB8C9100E1DB91 /* Project object */;
 }

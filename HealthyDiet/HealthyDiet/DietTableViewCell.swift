@@ -17,8 +17,6 @@ class DietTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        itemName.text = "test"
-        itemCategory.text = "test category"
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
