@@ -8,18 +8,23 @@
 
 import UIKit
 
-class DietDetailTableViewController: UITableViewController {
+class DietDetailTableViewController: UITableViewController, NSXMLParserDelegate {
     
     let header = ["Food Information", "Nutrients", "Recipes"]
+    var parser: NSXMLParser?
+    var directoryValid = false
+    var url: NSURL?
+    var diet: Diet?
+    var attributeKey = ["name","weight","measure"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        
+        // create parser
+        url = NSURL(string: "http://api.nal.usda.gov/ndb/nutrients/?ndbno=01009&format=xml&api_key=DEMO_KEY&nutrients=205&nutrients=204&nutrients=401")
+        parser = NSXMLParser(contentsOfURL: url!)
+        parser?.delegate = self
+        parser?.parse()
     }
 
     override func didReceiveMemoryWarning() {
@@ -47,7 +52,13 @@ class DietDetailTableViewController: UITableViewController {
             cell.caloriesDetail.text = "1480"
             cell.dailyValue.text = "74%"
             return cell
-        } else if(indexPath.section == 1 || indexPath.section == 0) {
+        } else if(indexPath.section == 0) {
+            print("section:\(indexPath.section), row:\(indexPath.row)")
+            let cell = tableView.dequeueReusableCellWithIdentifier("attributeCell", forIndexPath: indexPath) as! DietAttributeTableViewCell
+            cell.attributeName.text = attributeKey[indexPath.row]
+            cell.attributeDetail.text = diet?.information[attributeKey[indexPath.row]]
+            return cell
+        } else if(indexPath.section == 1) {
             print("section:\(indexPath.section), row:\(indexPath.row)")
             let cell = tableView.dequeueReusableCellWithIdentifier("attributeCell", forIndexPath: indexPath) as! DietAttributeTableViewCell
             cell.attributeName.text = "attribute name"
@@ -71,6 +82,40 @@ class DietDetailTableViewController: UITableViewController {
             return 112.0
         } else {
             return 45.0
+        }
+    }
+    
+    // MARK: - xml parser delegate
+    
+    func parser(parser: NSXMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String]) {
+        if (elementName == "food") {
+            directoryValid = true
+            // get values
+            if let id = attributeDict["ndbno"] {
+                if let name = attributeDict["name"] {
+                    if let weight = attributeDict["weight"] {
+                        if let measure = attributeDict["measure"] {
+                            // create diet
+                            diet = Diet(name: name, id: id, category: "", measure: measure, weight: weight)
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func parser(parser: NSXMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
+        // no
+    }
+    
+    func parser(parser: NSXMLParser, foundCharacters string: String) {
+        var data = string.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+        print(data)
+    }
+    
+    func parser(parser: NSXMLParser, foundAttributeDeclarationWithName attributeName: String, forElement elementName: String, type: String?, defaultValue: String?) {
+        if (directoryValid) {
+            print("\(attributeName)")
         }
     }
 

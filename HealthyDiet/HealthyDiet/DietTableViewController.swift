@@ -21,6 +21,9 @@ class DietTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let testClass = APIDataGetMethods()
+        testClass.getFoodInfo()
+        
     }
 
     override func didReceiveMemoryWarning() {

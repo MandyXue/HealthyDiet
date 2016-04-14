@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9525" systemVersion="15E64a" minimumToolsVersion="Xcode 7.0">
     <entity name="Diet" representedClassName=".Diet" syncable="YES">
-        <attribute name="catogory" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="category" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="measure" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="weight" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
@@ -25,9 +25,9 @@
         <relationship name="ingredients" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Ingredients" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Diet" positionX="-9" positionY="-120" width="128" height="133"/>
+        <element name="Diet" positionX="-9" positionY="-120" width="128" height="135"/>
+        <element name="Ingredients" positionX="196" positionY="42" width="128" height="75"/>
         <element name="Nutrient" positionX="-128" positionY="36" width="128" height="90"/>
         <element name="Recipe" positionX="36" positionY="42" width="128" height="120"/>
-        <element name="Ingredients" positionX="196" positionY="42" width="128" height="75"/>
     </elements>
 </model>
