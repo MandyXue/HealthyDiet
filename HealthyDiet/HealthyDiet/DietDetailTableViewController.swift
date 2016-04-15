@@ -109,7 +109,7 @@ class DietDetailTableViewController: UITableViewController, NSXMLParserDelegate 
     }
     
     func parser(parser: NSXMLParser, foundCharacters string: String) {
-        var data = string.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+        let data = string.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
         print(data)
     }
     

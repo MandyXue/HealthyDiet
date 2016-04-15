@@ -23,6 +23,7 @@
 		33FC7A671CBFCE0500C7FA6F /* ModelMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33FC7A661CBFCE0500C7FA6F /* ModelMethods.swift */; };
 		33FC7A691CBFDA5C00C7FA6F /* Diet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33FC7A681CBFDA5C00C7FA6F /* Diet.swift */; };
 		33FC7A6B1CBFDC3100C7FA6F /* Nutrient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33FC7A6A1CBFDC3100C7FA6F /* Nutrient.swift */; };
+		33FC7A6E1CC0883600C7FA6F /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33FC7A6D1CC0883600C7FA6F /* URL.swift */; };
 		4835D97650FDAB911C29F96D /* Pods_HealthyDiet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C36B76CAE1AEDA97ECB9A83 /* Pods_HealthyDiet.framework */; };
 		4E485773FC7D09199E5E7EB0 /* Pods_HealthyDietTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27411416D39D8ADFC3A772B7 /* Pods_HealthyDietTests.framework */; };
 /* End PBXBuildFile section */
@@ -59,6 +60,7 @@
 		33FC7A661CBFCE0500C7FA6F /* ModelMethods.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelMethods.swift; sourceTree = "<group>"; };
 		33FC7A681CBFDA5C00C7FA6F /* Diet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Diet.swift; sourceTree = "<group>"; };
 		33FC7A6A1CBFDC3100C7FA6F /* Nutrient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Nutrient.swift; sourceTree = "<group>"; };
+		33FC7A6D1CC0883600C7FA6F /* URL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
 		5766663781646433F2E86343 /* Pods-HealthyDietTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HealthyDietTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-HealthyDietTests/Pods-HealthyDietTests.release.xcconfig"; sourceTree = "<group>"; };
 		63671B2389FADF77DF3C9EF6 /* Pods-HealthyDiet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HealthyDiet.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HealthyDiet/Pods-HealthyDiet.debug.xcconfig"; sourceTree = "<group>"; };
 		8C36B76CAE1AEDA97ECB9A83 /* Pods_HealthyDiet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HealthyDiet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -116,8 +118,7 @@
 				33FC7A3C1CBE64FF00C7FA6F /* Model.xcdatamodeld */,
 				3386AD0E1CBC8F4200E1DB91 /* Supporting Files */,
 				33FC7A661CBFCE0500C7FA6F /* ModelMethods.swift */,
-				33FC7A681CBFDA5C00C7FA6F /* Diet.swift */,
-				33FC7A6A1CBFDC3100C7FA6F /* Nutrient.swift */,
+				33FC7A6C1CC0849700C7FA6F /* Model */,
 			);
 			path = HealthyDiet;
 			sourceTree = "<group>";
@@ -160,6 +161,16 @@
 				3386AD081CBB90BA00E1DB91 /* DietTableViewController.swift */,
 			);
 			name = Controllers;
+			sourceTree = "<group>";
+		};
+		33FC7A6C1CC0849700C7FA6F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				33FC7A681CBFDA5C00C7FA6F /* Diet.swift */,
+				33FC7A6A1CBFDC3100C7FA6F /* Nutrient.swift */,
+				33FC7A6D1CC0883600C7FA6F /* URL.swift */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 		BB3E3540E754239944605314 /* Pods */ = {
@@ -396,6 +407,7 @@
 				3386AD0B1CBB93D700E1DB91 /* DietTableViewCell.swift in Sources */,
 				33FC7A391CBDF0D000C7FA6F /* DietAttributeTableViewCell.swift in Sources */,
 				3386AD091CBB90BA00E1DB91 /* DietTableViewController.swift in Sources */,
+				33FC7A6E1CC0883600C7FA6F /* URL.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

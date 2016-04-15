@@ -11,8 +11,7 @@ import SWXMLHash
 import Alamofire
 
 class APIDataGetMethods:NSObject,NSXMLParserDelegate{
-    
-    
+
 
     func getFoodInfo() {
         
