@@ -15,7 +15,7 @@ enum URL {
         case .SearchDiet:
             return "http://api.nal.usda.gov/ndb/search"
         case .GetDietInfo:
-            return "http://api.nal.usda.gov/ndb/nutrients"
+            return "http://api.nal.usda.gov/ndb/nutrients?nutrients=205&nutrients=204&nutrients=208&format=xml&api_key=\(API_KEY)&ndbno="
         case .SearchDietImage:
             return ""
         case .SearchRecipes:

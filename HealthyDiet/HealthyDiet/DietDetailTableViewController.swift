@@ -7,24 +7,22 @@
 //
 
 import UIKit
+import SWXMLHash
+import Alamofire
+import PKHUD
 
-class DietDetailTableViewController: UITableViewController, NSXMLParserDelegate {
+class DietDetailTableViewController: UITableViewController {
+    
+    var diet: Diet?
     
     let header = ["Food Information", "Nutrients", "Recipes"]
-    var parser: NSXMLParser?
-    var directoryValid = false
-    var url: NSURL?
-    var diet: Diet?
-    var attributeKey = ["name","weight","measure"]
+    let attributeKey = ["name","weight","measure"]
+    
+    // MARK: - life cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // create parser
-        url = NSURL(string: "http://api.nal.usda.gov/ndb/nutrients/?ndbno=01009&format=xml&api_key=DEMO_KEY&nutrients=205&nutrients=204&nutrients=401")
-        parser = NSXMLParser(contentsOfURL: url!)
-        parser?.delegate = self
-        parser?.parse()
+        fetchDietInfo()
     }
 
     override func didReceiveMemoryWarning() {
@@ -41,7 +39,14 @@ class DietDetailTableViewController: UITableViewController, NSXMLParserDelegate 
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 3
+        if (section == 2) {
+            return (diet?.recipes.count)!
+        } else if(section == 0) {
+            return attributeKey.count
+        } else if(section == 1) {
+            return (diet?.nutrients.count)!
+        }
+        return 0
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -61,8 +66,15 @@ class DietDetailTableViewController: UITableViewController, NSXMLParserDelegate 
         } else if(indexPath.section == 1) {
             print("section:\(indexPath.section), row:\(indexPath.row)")
             let cell = tableView.dequeueReusableCellWithIdentifier("attributeCell", forIndexPath: indexPath) as! DietAttributeTableViewCell
-            cell.attributeName.text = "attribute name"
-            cell.attributeDetail.text = "detail"
+            if (diet?.nutrients.count > 0) {
+                cell.attributeName.text = diet?.nutrients[indexPath.row].name
+                if let unit = diet?.nutrients[indexPath.row].unit {
+                    if let valueStr = numberToString(diet?.nutrients[indexPath.row].value) {
+                        cell.attributeDetail.text = valueStr + unit
+                    }
+                }
+            
+            }
             return cell
         }
         
@@ -85,83 +97,58 @@ class DietDetailTableViewController: UITableViewController, NSXMLParserDelegate 
         }
     }
     
-    // MARK: - xml parser delegate
+    // MARK: - helper
     
-    func parser(parser: NSXMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String]) {
-        if (elementName == "food") {
-            directoryValid = true
-            // get values
-            if let id = attributeDict["ndbno"] {
-                if let name = attributeDict["name"] {
-                    if let weight = attributeDict["weight"] {
-                        if let measure = attributeDict["measure"] {
-                            // create diet
-                            diet = Diet(name: name, id: id, category: "", measure: measure, weight: weight)
+    func numberToString(number: Float?) -> String? {
+        // 处理number
+        let numberFormatter = NSNumberFormatter()
+        numberFormatter.numberStyle = .DecimalStyle
+        if let string = numberFormatter.stringFromNumber(number!) {
+            return string
+        }
+        return nil
+    }
+    
+    func fetchDietInfo() {
+        if diet != nil && diet?.nutrients.count == 0 {
+            if let nbno = diet?.id {
+                HUD.show(.Progress)
+                Alamofire.request(.GET, URL.GetDietInfo.url()+nbno)
+                    .responseString { response in
+                        if let responseString = response.result.value {
+                            let xml = SWXMLHash.parse(responseString)
+                            
+                            // get weight
+                            if let weight = xml["report"]["foods"]["food"].element?.attributes["weight"] {
+                                self.diet?.setWeight(weight)
+                            }
+                            
+                            // get measure
+                            if let measure = xml["report"]["foods"]["food"].element?.attributes["measure"] {
+                                self.diet?.setMeasure(measure)
+                            }
+                            
+                            // get nutrients
+                            for element in xml["report"]["foods"]["food"]["nutrients"]["nutrient"] {
+                                if let name = element.element?.attributes["nutrient"] {
+                                    if let unit = element.element?.attributes["unit"] {
+                                        if let value = element.element?.attributes["value"] {
+                                            self.diet?.addNutrients(Nutrient(name: name, unit: unit, value: value))
+                                        }
+                                    }
+                                }
+                            }
+                            self.tableView.reloadData()
+                            HUD.flash(.Success)
+                        } else {
+                            HUD.show(.Error)
+                            HUD.hide(afterDelay: 2.0)
                         }
-                    }
                 }
             }
         }
     }
     
-    func parser(parser: NSXMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
-        // no
-    }
-    
-    func parser(parser: NSXMLParser, foundCharacters string: String) {
-        let data = string.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-        print(data)
-    }
-    
-    func parser(parser: NSXMLParser, foundAttributeDeclarationWithName attributeName: String, forElement elementName: String, type: String?, defaultValue: String?) {
-        if (directoryValid) {
-            print("\(attributeName)")
-        }
-    }
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
+    // TODO: get recipes
 
 }

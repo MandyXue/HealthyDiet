@@ -93,7 +93,7 @@ class AddDietViewController: UITableViewController, UISearchBarDelegate, UISearc
             if self.navigationController != nil {
                 if let parent = self.backViewController() as? DietTableViewController{
                     parent.diets.append(diets[indexPath.row]!)
-                    // TODO: 获取recipe和information
+                    // TODO: get image from supermarket API
                     self.navigationController?.popViewControllerAnimated(true)
                     return
                 }
@@ -160,7 +160,7 @@ class AddDietViewController: UITableViewController, UISearchBarDelegate, UISearc
                         let xml = SWXMLHash.parse(responseString)
                         self.diets.removeAll()
                         for element in xml["list"]["item"] {
-                            self.diets.append(Diet(name: element["name"].element!.text!, id: element["ndbno"].element!.text!, category: element["group"].element!.text!, measure: "", weight: ""))
+                            self.diets.append(Diet(name: element["name"].element!.text!, id: element["ndbno"].element!.text!, category: element["group"].element!.text!, searchText: parameters["q"]!))
                         }
                         self.tableView.reloadData()
                         HUD.flash(.Success)

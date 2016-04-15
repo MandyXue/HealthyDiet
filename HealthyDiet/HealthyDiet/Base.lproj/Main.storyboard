@@ -76,7 +76,7 @@
                                     <outlet property="itemCategory" destination="Hqa-9F-Uk3" id="kvY-Ut-M00"/>
                                     <outlet property="itemImage" destination="NPZ-Tb-rmB" id="BXJ-4b-B8P"/>
                                     <outlet property="itemName" destination="TPV-uI-fY5" id="Ps4-Yg-zlk"/>
-                                    <segue destination="yxL-6C-Biv" kind="push" id="uzn-pv-WmQ"/>
+                                    <segue destination="yxL-6C-Biv" kind="push" identifier="DietDetailSegue" id="uzn-pv-WmQ"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -178,16 +178,21 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="attributeName" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N54-Fp-CJf">
-                                            <rect key="frame" x="16" y="13" width="111" height="17"/>
+                                            <rect key="frame" x="16" y="13" width="93" height="17"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="111" id="jUl-UQ-mdD"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="jUl-UQ-mdD"/>
+                                                </mask>
+                                            </variation>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="attributeDetail" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HNR-fm-dnJ">
-                                            <rect key="frame" x="135" y="12" width="109" height="20"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="attributeDetail" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HNR-fm-dnJ">
+                                            <rect key="frame" x="117" y="12" width="467" height="20.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -195,9 +200,10 @@
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="HNR-fm-dnJ" firstAttribute="centerY" secondItem="17J-3d-5sP" secondAttribute="centerY" id="4tS-3s-ukl"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="HNR-fm-dnJ" secondAttribute="trailing" constant="8" id="JbQ-8F-9zc"/>
                                         <constraint firstItem="N54-Fp-CJf" firstAttribute="centerY" secondItem="17J-3d-5sP" secondAttribute="centerY" id="N8Z-hk-clh"/>
                                         <constraint firstItem="N54-Fp-CJf" firstAttribute="leading" secondItem="17J-3d-5sP" secondAttribute="leadingMargin" constant="8" id="UD7-tE-2Eu"/>
-                                        <constraint firstItem="HNR-fm-dnJ" firstAttribute="leading" secondItem="N54-Fp-CJf" secondAttribute="trailing" constant="8" id="adV-xU-KGl"/>
+                                        <constraint firstItem="HNR-fm-dnJ" firstAttribute="leading" secondItem="N54-Fp-CJf" secondAttribute="trailing" constant="8" symbolic="YES" id="adV-xU-KGl"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
@@ -220,7 +226,7 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="recipeName" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Br5-Zl-beC">
-                                            <rect key="frame" x="99" y="18" width="93" height="21"/>
+                                            <rect key="frame" x="99" y="18" width="493" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -254,6 +260,7 @@
                                         </label>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="Br5-Zl-beC" firstAttribute="trailing" secondItem="Pjd-3q-ygr" secondAttribute="trailingMargin" id="0ch-0a-sZW"/>
                                         <constraint firstItem="e61-Hz-qJW" firstAttribute="centerY" secondItem="Pjd-3q-ygr" secondAttribute="centerY" id="2dp-xQ-YDv"/>
                                         <constraint firstItem="VLn-CU-rsm" firstAttribute="centerY" secondItem="XfS-aT-gRn" secondAttribute="centerY" id="3N3-ja-12Y"/>
                                         <constraint firstItem="XfS-aT-gRn" firstAttribute="leading" secondItem="e61-Hz-qJW" secondAttribute="trailing" constant="8" id="Pug-46-Yjr"/>
