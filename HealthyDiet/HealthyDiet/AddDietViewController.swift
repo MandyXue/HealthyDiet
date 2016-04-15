@@ -9,6 +9,7 @@
 import UIKit
 import SWXMLHash
 import Alamofire
+import PKHUD
 
 class AddDietViewController: UITableViewController, UISearchBarDelegate, UISearchResultsUpdating, NSXMLParserDelegate {
     
@@ -19,9 +20,6 @@ class AddDietViewController: UITableViewController, UISearchBarDelegate, UISearc
     let searchController = UISearchController(searchResultsController: nil)
     var filteredDiets = [String]()
     var searched : Bool = false  // 有没有点击search按钮
-    var parser: NSXMLParser?
-    var directoryValid = false
-    var url: NSURL?
     var diets = [Diet?]()
     
     // MARK: - life circle
@@ -32,12 +30,10 @@ class AddDietViewController: UITableViewController, UISearchBarDelegate, UISearc
         tableView.delegate = self
         tableView.dataSource = self
         
-        // set search controller
-        searchController.searchResultsUpdater = self
-        searchController.dimsBackgroundDuringPresentation = false
-        searchController.searchBar.delegate = self
-        definesPresentationContext = true
-        tableView.tableHeaderView = searchController.searchBar
+        setSearchController()
+        if self.navigationController != nil {
+            self.title = "Add Diet"
+        }
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -103,72 +99,52 @@ class AddDietViewController: UITableViewController, UISearchBarDelegate, UISearc
     // MARK: - search bar delegate
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-        // text did change
-    }
-    
-    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        searched = true
-        
-//        if let searchText = searchController.searchBar.text {
-//            // create parser
-//            url = NSURL(string: "http://api.nal.usda.gov/ndb/search/?format=xml&q="+searchText+"&max=25&offset=0&api_key=5OMJXRPPVdX7LrXDQucMslEiYy9hVy4X0fsKE7v8")
-//            parser = NSXMLParser(contentsOfURL: url!)
-//            parser?.delegate = self
-//            parser?.parse()
-//        }
-        refreshControl?.beginRefreshing()
-        self.searchDiets(self.searchController.searchBar.text, quantity: 100)
-        
-    }
-    
-    // MARK: - xml parser delegate
-    
-    func parser(parser: NSXMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String]) {
-        if (elementName == "food") {
-            directoryValid = true
-            // get values
+        if self.navigationController != nil {
+            self.navigationController?.popViewControllerAnimated(true)
         }
     }
     
-    func parser(parser: NSXMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
-        // no
-    }
-    
-    func parser(parser: NSXMLParser, foundCharacters string: String) {
-        let data = string.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-        print(data)
-    }
-    
-    func parser(parser: NSXMLParser, foundAttributeDeclarationWithName attributeName: String, forElement elementName: String, type: String?, defaultValue: String?) {
-        if (directoryValid) {
-            print("\(attributeName)")
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        if searchController.searchBar.text != nil {
+            searched = true
+            self.searchDiets(100)
         }
     }
     
     // MARK: - helper
     
-    func searchDiets(searchText: String?, quantity: Int) {
-        
-        if searchText != nil {
+    func setSearchController() {
+        // set search controller
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.searchBar.delegate = self
+        definesPresentationContext = true
+        tableView.tableHeaderView = searchController.searchBar
+        searchController.searchBar.sizeToFit()
+    }
+    
+    func searchDiets(quantity: Int) {
+        if let searchText = searchController.searchBar.text  {
+            HUD.show(.Progress)
             let parameters : [String:String] = [
                 "api_key":API_KEY,
-                "q":searchText!,
+                "q":searchText,
                 "max":"\(quantity)",
                 "format":"XML"
             ]
-            
             Alamofire.request(.GET, URL.SearchDiet.url(), parameters: parameters)
                 .responseString { response in
                     if let responseString = response.result.value {
                         let xml = SWXMLHash.parse(responseString)
+                        self.diets.removeAll()
                         for element in xml["list"]["item"] {
                             self.diets.append(Diet(name: element["name"].element!.text!, id: element["ndbno"].element!.text!, category: element["group"].element!.text!, measure: "", weight: ""))
                         }
                         self.tableView.reloadData()
+                        HUD.flash(.Success)
+                    } else {
+                        HUD.show(.Error)
+                        HUD.hide(afterDelay: 2.0)
                     }
             }
         }
@@ -180,14 +156,5 @@ class AddDietViewController: UITableViewController, UISearchBarDelegate, UISearc
             return diet.lowercaseString.containsString(searchText.lowercaseString)
         }
         tableView.reloadData()
-    }
-    
-    // TODO: refresh
-    
-    func refresh(){
-        if refreshControl != nil {
-            refreshControl?.beginRefreshing()
-        }
-//        refresh(refreshControl)
     }
 }
