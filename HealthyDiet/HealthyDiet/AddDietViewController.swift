@@ -63,6 +63,7 @@ class AddDietViewController: UITableViewController, UISearchBarDelegate, UISearc
             }
             cell.textLabel?.text = diet
         } else {
+            // 如果点击了searched，则加载搜索过的内容
             cell.textLabel?.text = diets[indexPath.row]?.name
         }
         return cell
@@ -83,11 +84,23 @@ class AddDietViewController: UITableViewController, UISearchBarDelegate, UISearc
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if (!searched) {
-            // TODO: 通过预加载的内容去搜索想要的内容
+            // 通过预加载的内容去搜索想要的内容
             print("hasn't selected search button")
+            searchDiets(tableView.cellForRowAtIndexPath(indexPath)?.textLabel?.text, quantity: 25)
+            return
         } else {
-            // TODO: 将获取到的diet传给主页面并dismiss本页面
+            // 将获取到的diet传给主页面并dismiss本页面
+            if self.navigationController != nil {
+                if let parent = self.backViewController() as? DietTableViewController{
+                    parent.diets.append(diets[indexPath.row]!)
+                    // TODO: 获取recipe和information
+                    self.navigationController?.popViewControllerAnimated(true)
+                    return
+                }
+            }
         }
+        HUD.show(.Error)
+        HUD.hide(afterDelay: 2.0)
     }
     
     // MARK: - search results updating
@@ -106,9 +119,13 @@ class AddDietViewController: UITableViewController, UISearchBarDelegate, UISearc
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         if searchController.searchBar.text != nil {
-            searched = true
-            self.searchDiets(100)
+            self.searchDiets(nil,quantity: 25)
         }
+    }
+    
+    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+        searched = false
+        tableView.reloadData()
     }
     
     // MARK: - helper
@@ -123,15 +140,20 @@ class AddDietViewController: UITableViewController, UISearchBarDelegate, UISearc
         searchController.searchBar.sizeToFit()
     }
     
-    func searchDiets(quantity: Int) {
-        if let searchText = searchController.searchBar.text  {
+    func searchDiets(searchText: String?, quantity: Int) {
+        searched = true
+        if let searchBarText = searchController.searchBar.text  {
             HUD.show(.Progress)
-            let parameters : [String:String] = [
+            // TODO: 往下拉继续加载
+            var parameters : [String:String] = [
                 "api_key":API_KEY,
-                "q":searchText,
+                "q":searchBarText,
                 "max":"\(quantity)",
                 "format":"XML"
             ]
+            if (searchText != nil) {
+                parameters["q"] = searchText
+            }
             Alamofire.request(.GET, URL.SearchDiet.url(), parameters: parameters)
                 .responseString { response in
                     if let responseString = response.result.value {
@@ -156,5 +178,19 @@ class AddDietViewController: UITableViewController, UISearchBarDelegate, UISearc
             return diet.lowercaseString.containsString(searchText.lowercaseString)
         }
         tableView.reloadData()
+    }
+}
+
+extension UIViewController {
+    
+    func backViewController() -> UIViewController? {
+        if let stack = self.navigationController?.viewControllers {
+            for(var i=stack.count-1;i>0;--i) {
+                if(stack[i] == self) {
+                    return stack[i-1]
+                }
+            }
+        }
+        return nil
     }
 }

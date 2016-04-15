@@ -11,19 +11,16 @@ import CoreData
 
 class DietTableViewController: UITableViewController {
     
-    let diets = [NSManagedObject]()
+    var diets = [Diet]()
     
-//    let diets = [
-//            ["itemName":"Apple Pie","itemCategory":"Snacks"],
-//            ["itemName":"Pineapple Pie","itemCategory":"Snacks"]
-//        ]
+    // MARK: - life cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let testClass = APIDataGetMethods()
-        testClass.getFoodInfo()
-        
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        tableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -40,8 +37,8 @@ class DietTableViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("DietTableViewCell", forIndexPath: indexPath) as! DietTableViewCell
-        cell.itemName.text = diets[indexPath.row].valueForKey("itemName") as? String
-        cell.itemCategory.text = diets[indexPath.row].valueForKey("itemCategory") as? String
+        cell.itemName.text = diets[indexPath.row].name
+        cell.itemCategory.text = diets[indexPath.row].category
 
         return cell
     }
