@@ -11,7 +11,10 @@ import CoreData
 
 class DietTableViewController: UITableViewController {
     
-    var diets = [Diet]()
+    var diets = [DietModel]()
+    let dataModel = DataController()
+    var page = 0
+    let size = 30
     
     // MARK: - life cycle
 
@@ -20,7 +23,13 @@ class DietTableViewController: UITableViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
-        tableView.reloadData()
+        self.dataModel.getDietsFromCoreData(self.page, size: self.size, resultHandler: { (dietList) -> Void in
+            if let resultList = dietList {
+                self.diets = resultList
+                self.tableView.reloadData()
+                print("reload success")
+            }
+        })
     }
 
     override func didReceiveMemoryWarning() {
@@ -37,8 +46,8 @@ class DietTableViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("DietTableViewCell", forIndexPath: indexPath) as! DietTableViewCell
-        cell.itemName.text = diets[indexPath.row].name
         cell.itemCategory.text = diets[indexPath.row].category
+        cell.itemName.text = diets[indexPath.row].name
 
         return cell
     }

@@ -21,6 +21,7 @@ class AddDietViewController: UITableViewController, UISearchBarDelegate, UISearc
     var filteredDiets = [String]()
     var searched : Bool = false  // 有没有点击search按钮
     var diets = [Diet?]()
+    let dataModel = DataController()
     
     // MARK: - life circle
 
@@ -92,8 +93,13 @@ class AddDietViewController: UITableViewController, UISearchBarDelegate, UISearc
             // 将获取到的diet传给主页面并dismiss本页面
             if self.navigationController != nil {
                 if let parent = self.backViewController() as? DietTableViewController{
-                    parent.diets.append(diets[indexPath.row]!)
+//                    parent.diets.append(diets[indexPath.row]!)
                     // TODO: get image from supermarket API
+                    do {
+                        try self.dataModel.storeDiets(diets[indexPath.row]!)
+                    } catch {
+                        print("\(error)")
+                    }
                     self.navigationController?.popViewControllerAnimated(true)
                     return
                 }

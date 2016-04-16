@@ -1,33 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9525" systemVersion="15E64a" minimumToolsVersion="Xcode 7.0">
-    <entity name="Diet" representedClassName=".Diet" syncable="YES">
+    <entity name="DietModel" representedClassName=".DietModel" syncable="YES">
         <attribute name="category" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="measure" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="nutrients" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="recipes" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="searchText" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="weight" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <relationship name="nutrient" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Nutrient" syncable="YES"/>
-        <relationship name="recipe" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Recipe" syncable="YES"/>
-    </entity>
-    <entity name="Ingredients" representedClassName=".Ingredients" syncable="YES">
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="weight" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-    </entity>
-    <entity name="Nutrient" representedClassName=".Nutrient" syncable="YES">
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="unit" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="value" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
-    </entity>
-    <entity name="Recipe" representedClassName=".Recipe" syncable="YES">
-        <attribute name="calories" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="image" optional="YES" attributeType="Binary" syncable="YES"/>
-        <attribute name="ingredientNumber" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="ingredients" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Ingredients" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Diet" positionX="-9" positionY="-120" width="128" height="135"/>
-        <element name="Ingredients" positionX="196" positionY="42" width="128" height="75"/>
-        <element name="Nutrient" positionX="-128" positionY="36" width="128" height="90"/>
-        <element name="Recipe" positionX="36" positionY="42" width="128" height="120"/>
+        <element name="DietModel" positionX="-9" positionY="-120" width="128" height="165"/>
     </elements>
 </model>
