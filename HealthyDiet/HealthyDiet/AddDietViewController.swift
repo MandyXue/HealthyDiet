@@ -146,7 +146,7 @@ class AddDietViewController: UITableViewController, UISearchBarDelegate, UISearc
             HUD.show(.Progress)
             // TODO: 往下拉继续加载
             var parameters : [String:String] = [
-                "api_key":API_KEY,
+                "api_key":API_KEY.NNDB.key(),
                 "q":searchBarText,
                 "max":"\(quantity)",
                 "format":"XML"

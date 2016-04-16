@@ -88,9 +88,7 @@
                     <navigationItem key="navigationItem" title="Today's Diet" id="oYJ-N0-09k">
                         <barButtonItem key="rightBarButtonItem" title="Add" id="Pgc-dA-RFZ">
                             <connections>
-                                <segue destination="9Np-x1-u6z" kind="popover" popoverAnchorBarButtonItem="Pgc-dA-RFZ" id="msU-In-ZdC">
-                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                                </segue>
+                                <segue destination="9Np-x1-u6z" kind="push" id="msU-In-ZdC"/>
                             </connections>
                         </barButtonItem>
                         <connections>
@@ -111,13 +109,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <view key="tableFooterView" contentMode="scaleToFill" id="MU6-3Y-ASe">
-                            <rect key="frame" x="0.0" y="72" width="600" height="0.0"/>
+                            <rect key="frame" x="0.0" y="136" width="600" height="0.0"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AddDietTableViewCell" textLabel="ylU-Wk-Qib" style="IBUITableViewCellStyleDefault" id="QZP-Bq-4rs">
-                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QZP-Bq-4rs" id="vFC-sT-YJE">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
@@ -226,13 +224,13 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="recipeName" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Br5-Zl-beC">
-                                            <rect key="frame" x="99" y="18" width="493" height="21"/>
+                                            <rect key="frame" x="99" y="18" width="493" height="20.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="calorieDetail" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yAz-s4-9cT">
-                                            <rect key="frame" x="196" y="48" width="95" height="21"/>
+                                            <rect key="frame" x="177" y="48.5" width="95" height="20.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.96078431369999995" green="0.65098039220000004" blue="0.13725490200000001" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -243,19 +241,19 @@
                                             <color key="textColor" red="0.43921568630000002" green="0.43921568630000002" blue="0.43921568630000002" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="percent" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VLn-CU-rsm">
-                                            <rect key="frame" x="196" y="74" width="59" height="21"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" red="0.96078431369999995" green="0.65098039220000004" blue="0.13725490200000001" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Daily value:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XfS-aT-gRn">
-                                            <rect key="frame" x="99" y="75" width="78" height="18"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Weights:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XfS-aT-gRn">
+                                            <rect key="frame" x="99" y="75" width="70" height="18"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="78" id="jCO-Ic-dCd"/>
+                                                <constraint firstAttribute="width" constant="70" id="jCO-Ic-dCd"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <color key="textColor" red="0.43921568630000002" green="0.43921568630000002" blue="0.43921568630000002" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="percent" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VLn-CU-rsm">
+                                            <rect key="frame" x="177" y="75" width="59" height="20.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.96078431369999995" green="0.65098039220000004" blue="0.13725490200000001" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
@@ -271,7 +269,7 @@
                                         <constraint firstItem="XfS-aT-gRn" firstAttribute="top" secondItem="6n5-N8-2SY" secondAttribute="bottom" constant="8" id="fdi-hO-qLs"/>
                                         <constraint firstItem="e61-Hz-qJW" firstAttribute="leading" secondItem="Pjd-3q-ygr" secondAttribute="leadingMargin" constant="8" id="mh2-0Q-RI4"/>
                                         <constraint firstItem="Br5-Zl-beC" firstAttribute="leading" secondItem="e61-Hz-qJW" secondAttribute="trailing" constant="8" id="owI-JO-OQ4"/>
-                                        <constraint firstItem="VLn-CU-rsm" firstAttribute="leading" secondItem="XfS-aT-gRn" secondAttribute="trailing" constant="19" id="t4a-cD-thG"/>
+                                        <constraint firstItem="VLn-CU-rsm" firstAttribute="leading" secondItem="XfS-aT-gRn" secondAttribute="trailing" constant="8" symbolic="YES" id="t4a-cD-thG"/>
                                         <constraint firstItem="XfS-aT-gRn" firstAttribute="bottom" secondItem="e61-Hz-qJW" secondAttribute="bottom" id="wLn-Er-aNF"/>
                                     </constraints>
                                 </tableViewCellContentView>

@@ -113,11 +113,10 @@
 			isa = PBXGroup;
 			children = (
 				3386ACEC1CBB8C9100E1DB91 /* Main.storyboard */,
-				33FC7A641CBFCDB600C7FA6F /* Cells */,
 				33FC7A651CBFCDBC00C7FA6F /* Controllers */,
+				33FC7A6C1CC0849700C7FA6F /* Model */,
 				33FC7A3C1CBE64FF00C7FA6F /* Model.xcdatamodeld */,
 				3386AD0E1CBC8F4200E1DB91 /* Supporting Files */,
-				33FC7A6C1CC0849700C7FA6F /* Model */,
 			);
 			path = HealthyDiet;
 			sourceTree = "<group>";
@@ -155,6 +154,7 @@
 		33FC7A651CBFCDBC00C7FA6F /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				33FC7A641CBFCDB600C7FA6F /* Cells */,
 				33FC7A361CBDF04500C7FA6F /* DietDetailTableViewController.swift */,
 				3386AD0C1CBBAA3A00E1DB91 /* AddDietViewController.swift */,
 				3386AD081CBB90BA00E1DB91 /* DietTableViewController.swift */,

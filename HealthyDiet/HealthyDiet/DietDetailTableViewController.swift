@@ -10,6 +10,7 @@ import UIKit
 import SWXMLHash
 import Alamofire
 import PKHUD
+import SwiftyJSON
 
 class DietDetailTableViewController: UITableViewController {
     
@@ -18,11 +19,19 @@ class DietDetailTableViewController: UITableViewController {
     let header = ["Food Information", "Nutrients", "Recipes"]
     let attributeKey = ["name","weight","measure"]
     
+    var infoServiceCallComplete = false
+    var recipeServiceCallComplete = false
+    
     // MARK: - life cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        HUD.show(.Progress)
         fetchDietInfo()
+        searchRecipes()
     }
 
     override func didReceiveMemoryWarning() {
@@ -52,28 +61,23 @@ class DietDetailTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if (indexPath.section == 2) {
             let cell = tableView.dequeueReusableCellWithIdentifier("recipeCell", forIndexPath: indexPath) as! RecipeTableViewCell
-            cell.recipeImage.image = UIImage(named: "defaultImage")
-            cell.recipeName.text = "recipe name testing bla bla bla"
-            cell.caloriesDetail.text = "1480"
-            cell.dailyValue.text = "74%"
+            if (diet?.recipes.count > 0) {
+                cell.recipeImage.image = diet?.recipes[indexPath.row].image
+                cell.recipeName.text = diet?.recipes[indexPath.row].name
+                cell.caloriesDetail.text = diet?.recipes[indexPath.row].caloriesInString()
+                cell.dailyValue.text = diet?.recipes[indexPath.row].totalWeightsInString()
+            }
             return cell
         } else if(indexPath.section == 0) {
-            print("section:\(indexPath.section), row:\(indexPath.row)")
             let cell = tableView.dequeueReusableCellWithIdentifier("attributeCell", forIndexPath: indexPath) as! DietAttributeTableViewCell
             cell.attributeName.text = attributeKey[indexPath.row]
             cell.attributeDetail.text = diet?.information[attributeKey[indexPath.row]]
             return cell
         } else if(indexPath.section == 1) {
-            print("section:\(indexPath.section), row:\(indexPath.row)")
             let cell = tableView.dequeueReusableCellWithIdentifier("attributeCell", forIndexPath: indexPath) as! DietAttributeTableViewCell
             if (diet?.nutrients.count > 0) {
                 cell.attributeName.text = diet?.nutrients[indexPath.row].name
-                if let unit = diet?.nutrients[indexPath.row].unit {
-                    if let valueStr = numberToString(diet?.nutrients[indexPath.row].value) {
-                        cell.attributeDetail.text = valueStr + unit
-                    }
-                }
-            
+                cell.attributeDetail.text = diet?.nutrients[indexPath.row].toString()
             }
             return cell
         }
@@ -109,46 +113,116 @@ class DietDetailTableViewController: UITableViewController {
         return nil
     }
     
+    // get diet info
+    
     func fetchDietInfo() {
         if diet != nil && diet?.nutrients.count == 0 {
             if let nbno = diet?.id {
-                HUD.show(.Progress)
+//                HUD.show(.Progress)
                 Alamofire.request(.GET, URL.GetDietInfo.url()+nbno)
                     .responseString { response in
-                        if let responseString = response.result.value {
-                            let xml = SWXMLHash.parse(responseString)
-                            
-                            // get weight
-                            if let weight = xml["report"]["foods"]["food"].element?.attributes["weight"] {
-                                self.diet?.setWeight(weight)
-                            }
-                            
-                            // get measure
-                            if let measure = xml["report"]["foods"]["food"].element?.attributes["measure"] {
-                                self.diet?.setMeasure(measure)
-                            }
-                            
-                            // get nutrients
-                            for element in xml["report"]["foods"]["food"]["nutrients"]["nutrient"] {
-                                if let name = element.element?.attributes["nutrient"] {
-                                    if let unit = element.element?.attributes["unit"] {
-                                        if let value = element.element?.attributes["value"] {
-                                            self.diet?.addNutrients(Nutrient(name: name, unit: unit, value: value))
+                        switch response.result {
+                        case .Success:
+                            if let responseString = response.result.value {
+                                let xml = SWXMLHash.parse(responseString)
+                                
+                                // get weight
+                                if let weight = xml["report"]["foods"]["food"].element?.attributes["weight"] {
+                                    self.diet?.setWeight(weight)
+                                }
+                                
+                                // get measure
+                                if let measure = xml["report"]["foods"]["food"].element?.attributes["measure"] {
+                                    self.diet?.setMeasure(measure)
+                                }
+                                
+                                // get nutrients
+                                for element in xml["report"]["foods"]["food"]["nutrients"]["nutrient"] {
+                                    if let name = element.element?.attributes["nutrient"] {
+                                        if let unit = element.element?.attributes["unit"] {
+                                            if let value = element.element?.attributes["value"] {
+                                                self.diet?.addNutrients(Nutrient(name: name, unit: unit, value: value))
+                                            }
                                         }
                                     }
                                 }
+                                self.tableView.reloadData()
+                                print("fetch diet completed")
+                                self.infoServiceCallComplete = true
+                                self.handleServiceCallCompletion()
+                            } else {
+                                self.serviceCallFail()
                             }
-                            self.tableView.reloadData()
-                            HUD.flash(.Success)
-                        } else {
-                            HUD.show(.Error)
-                            HUD.hide(afterDelay: 2.0)
+                            break
+                        case .Failure(let error):
+                            print(error)
+                            self.serviceCallFail()
                         }
                 }
             }
         }
     }
     
-    // TODO: get recipes
+    // get recipes
+    
+    func searchRecipes() {
+        if diet != nil && diet?.recipes.count == 0 {
+            if let searchText = diet?.searchText {
+                HUD.show(.Progress)
+                let parameters = [
+                    "q":searchText,
+                    "app_id":API_KEY.Edamam_Id.key(),
+                    "app_key":API_KEY.Edamam_Key.key(),
+                    "to":"5"
+                ]
+                
+                Alamofire.request(.GET, URL.SearchRecipes.url(), parameters: parameters)
+                    .responseJSON { response in
+                        switch response.result {
+                        case .Success:
+                            if let value = response.result.value {
+                                let json = JSON(value)
+                                let recipes = json["hits"]
+                                for (_,recipe):(String, JSON) in recipes {
+                                    if let name = recipe["recipe"]["label"].string {
+                                        if let calories = recipe["recipe"]["calories"].float {
+                                            if let weight = recipe["recipe"]["totalWeight"].float {
+                                                let newRecipe = Recipe(name: name, calories: calories, totalWeights: weight)
+                                                if let imageURL = recipe["recipe"]["image"].string {
+                                                    newRecipe.setImage(imageURL)
+                                                }
+                                                self.diet?.addRecipes(newRecipe)
+                                            }
+                                        }
+                                    }
+                                    
+                                }
+                                self.tableView.reloadData()
+                                self.recipeServiceCallComplete = true
+                                self.handleServiceCallCompletion()
+                            } else {
+                                self.serviceCallFail()
+                            }
+                            break
+                        case .Failure(let error):
+                            print(error)
+                            self.serviceCallFail()
+                        }
+                }
+            }
+        }
+    }
+    
+    func handleServiceCallCompletion() {
+        if self.infoServiceCallComplete && self.recipeServiceCallComplete {
+            // Handle the fact that you're finished
+            HUD.flash(.Success)
+        }
+    }
+    
+    func serviceCallFail() {
+        HUD.show(.Error)
+        HUD.hide(afterDelay: 2.0)
+    }
 
 }

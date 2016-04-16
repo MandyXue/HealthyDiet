@@ -23,4 +23,11 @@ class Nutrient {
             self.value = number.floatValue
         }
     }
+    
+    func toString() -> String {
+        if unit != nil {
+            return "\(value) " + unit!
+        }
+        return "Something bad happens :("
+    }
 }
