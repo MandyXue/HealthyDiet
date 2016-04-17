@@ -18,10 +18,11 @@ class AddDietViewController: UITableViewController, UISearchBarDelegate, UISearc
     var dietList = ["Apple", "Apricot", "Banana", "Blueberry", "Cantaloupe", "Cherry","Clementine", "Coconut", "Cranberry", "Fig", "Grape", "Grapefruit","Kiwi fruit", "Lemon", "Lime", "Lychee", "Mandarine", "Mango","Melon", "Nectarine", "Olive", "Orange", "Papaya", "Peach","Pear", "Pineapple", "Raspberry", "Strawberry","asparagus","apples","avacado","alfalfa","acorn squash","almond","arugala","artichoke","applesauce","asian noodles","antelope","ahi tuna","albacore tuna","juice","Avocado roll","Bruscetta","bacon","black beans","bagels","baked beans","BBQ","bison","barley","beer","bisque","bluefish","bread","broccoli","buritto","babaganoosh","Cabbage","cake","carrots","carne asada","celery","cheese","chicken","catfish","chips","chocolate","chowder","clams","coffee","cookies","corn","cupcakes","crab","curry","cereal","chimichanga","dates","dips","duck","dumplings","donuts","eggs","enchilada","eggrolls","English muffins","edimame","sushi","fajita","falafel","fish","franks","fondu","French toast","French dip","Garlic","ginger","gnocchi","goose","granola","grapes","green beans","Guancamole","gumbo","grits","Graham crackers","ham","halibut","hamburger","honey","huenos rancheros","hash browns","hot dogs","haiku roll","hummus","ice cream","Irish stew","Indian food","Italian bread","jambalaya","jelly","jam","jerky","jalapeño","kale","kabobs","ketchup","kiwi","kidney beans","kingfish","lobster","Lamb","Linguine","Lasagna","Meatballs","Moose","Milk","Milkshake","Noodles","Ostrich","Pizza","Pepperoni","Porter","Pancakes","Quesadilla","Quiche","Reuben","Spinach","Spaghetti","Tater tots","Toast","Venison","Waffles","Wine","Walnuts","Yogurt","Ziti","Zucchini"]
     
     let searchController = UISearchController(searchResultsController: nil)
+    let dataModel = DataController()
+    
     var filteredDiets = [String]()
     var searched : Bool = false  // 有没有点击search按钮
-    var diets = [Diet?]()
-    let dataModel = DataController()
+    var dietsTempArr = [[String:String]]()
     
     // MARK: - life circle
 
@@ -65,7 +66,7 @@ class AddDietViewController: UITableViewController, UISearchBarDelegate, UISearc
             cell.textLabel?.text = diet
         } else {
             // 如果点击了searched，则加载搜索过的内容
-            cell.textLabel?.text = diets[indexPath.row]?.name
+            cell.textLabel?.text = dietsTempArr[indexPath.row]["name"]
         }
         return cell
     }
@@ -78,7 +79,7 @@ class AddDietViewController: UITableViewController, UISearchBarDelegate, UISearc
             return dietList.count
         }
         
-        return diets.count
+        return dietsTempArr.count
     }
     
     // MARK: - tableview delegate
@@ -92,11 +93,11 @@ class AddDietViewController: UITableViewController, UISearchBarDelegate, UISearc
         } else {
             // 将获取到的diet传给主页面并dismiss本页面
             if self.navigationController != nil {
-                if let parent = self.backViewController() as? DietTableViewController{
-//                    parent.diets.append(diets[indexPath.row]!)
-                    // TODO: get image from supermarket API
+                if let _ = self.backViewController() as? DietTableViewController{
+                    // 把diet存到core data以便访问
                     do {
-                        try self.dataModel.storeDiets(diets[indexPath.row]!)
+                        let diet = dietsTempArr[indexPath.row]
+                        try self.dataModel.storeDiets(diet["name"], id: diet["id"], searchText: diet["searchText"], category: diet["category"])
                     } catch {
                         print("\(error)")
                     }
@@ -164,9 +165,9 @@ class AddDietViewController: UITableViewController, UISearchBarDelegate, UISearc
                 .responseString { response in
                     if let responseString = response.result.value {
                         let xml = SWXMLHash.parse(responseString)
-                        self.diets.removeAll()
+                        self.dietsTempArr.removeAll()
                         for element in xml["list"]["item"] {
-                            self.diets.append(Diet(name: element["name"].element!.text!, id: element["ndbno"].element!.text!, category: element["group"].element!.text!, searchText: parameters["q"]!))
+                            self.dietsTempArr.append(["name":element["name"].element!.text!,"id":element["ndbno"].element!.text!, "category":element["group"].element!.text!, "searchText": parameters["q"]!])
                         }
                         self.tableView.reloadData()
                         HUD.flash(.Success)

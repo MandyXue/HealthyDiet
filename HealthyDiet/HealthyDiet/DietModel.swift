@@ -21,5 +21,15 @@ class DietModel: NSManagedObject {
         self.primitiveValueForKey("nutrients")
         self.didChangeValueForKey("nutrients", withSetMutation: .UnionSetMutation, usingObjects: nutrients as Set<NSObject>)
     }
+    
+    func addRecipeObject(recipe: RecipeModel) {
+        self.mutableSetValueForKey("recipes").addObject(recipe)
+    }
+    
+    func addRecipes(recipes: NSSet) {
+        self.willChangeValueForKey("recipes", withSetMutation: .UnionSetMutation, usingObjects: recipes as Set<NSObject>)
+        self.primitiveValueForKey("recipes")
+        self.didChangeValueForKey("recipes", withSetMutation: .UnionSetMutation, usingObjects: recipes as Set<NSObject>)
+    }
 
 }

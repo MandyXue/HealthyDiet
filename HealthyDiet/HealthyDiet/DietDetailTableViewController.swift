@@ -210,58 +210,58 @@ class DietDetailTableViewController: UITableViewController {
     
     // get recipes
     
-    func searchRecipes() {
-        if diet != nil {
-            if diet?.recipes == nil {
-                if let searchText = diet?.searchText {
-                    HUD.show(.Progress)
-                    let parameters = [
-                        "q":searchText,
-                        "app_id":API_KEY.Edamam_Id.key(),
-                        "app_key":API_KEY.Edamam_Key.key(),
-                        "to":"5"
-                    ]
-                    
-                    Alamofire.request(.GET, URL.SearchRecipes.url(), parameters: parameters)
-                        .responseJSON { response in
-                            switch response.result {
-                            case .Success:
-                                if let value = response.result.value {
-                                    let json = JSON(value)
-                                    let recipes = json["hits"]
-                                    let recipesArray = NSMutableArray()
-                                    
-                                    for (_,recipe):(String, JSON) in recipes {
-                                        if let name = recipe["recipe"]["label"].string {
-                                            if let calories = recipe["recipe"]["calories"].float {
-                                                if let weight = recipe["recipe"]["totalWeight"].float {
-                                                    let newRecipe = Recipe(name: name, calories: calories, totalWeights: weight)
-                                                    if let imageURL = recipe["recipe"]["image"].string {
-                                                        newRecipe.setImage(imageURL)
-                                                    }
-                                                    recipesArray.addObject(Recipe(name: name, calories: calories, totalWeights: weight))
-                                                }
-                                            }
-                                        }
-                                        
-                                    }
-//                                    self.diet?.nutrients = NSArray(array: recipesArray)
-                                    self.diet?.setValue(self.diet?.nutrients, forKey: "nutrients")
-                                    self.recipeServiceCallComplete = true
-                                    self.handleServiceCallCompletion()
-                                } else {
-                                    self.serviceCallFail()
-                                }
-                                break
-                            case .Failure(let error):
-                                print(error)
-                                self.serviceCallFail()
-                            }
-                    }
-                }
-            }
-        }
-    }
+//    func searchRecipes() {
+//        if diet != nil {
+//            if diet?.recipes == nil {
+//                if let searchText = diet?.searchText {
+//                    HUD.show(.Progress)
+//                    let parameters = [
+//                        "q":searchText,
+//                        "app_id":API_KEY.Edamam_Id.key(),
+//                        "app_key":API_KEY.Edamam_Key.key(),
+//                        "to":"5"
+//                    ]
+//                    
+//                    Alamofire.request(.GET, URL.SearchRecipes.url(), parameters: parameters)
+//                        .responseJSON { response in
+//                            switch response.result {
+//                            case .Success:
+//                                if let value = response.result.value {
+//                                    let json = JSON(value)
+//                                    let recipes = json["hits"]
+//                                    let recipesArray = NSMutableArray()
+//                                    
+//                                    for (_,recipe):(String, JSON) in recipes {
+//                                        if let name = recipe["recipe"]["label"].string {
+//                                            if let calories = recipe["recipe"]["calories"].float {
+//                                                if let weight = recipe["recipe"]["totalWeight"].float {
+//                                                    let newRecipe = Recipe(name: name, calories: calories, totalWeights: weight)
+//                                                    if let imageURL = recipe["recipe"]["image"].string {
+//                                                        newRecipe.setImage(imageURL)
+//                                                    }
+//                                                    recipesArray.addObject(Recipe(name: name, calories: calories, totalWeights: weight))
+//                                                }
+//                                            }
+//                                        }
+//                                        
+//                                    }
+////                                    self.diet?.nutrients = NSArray(array: recipesArray)
+//                                    self.diet?.setValue(self.diet?.nutrients, forKey: "nutrients")
+//                                    self.recipeServiceCallComplete = true
+//                                    self.handleServiceCallCompletion()
+//                                } else {
+//                                    self.serviceCallFail()
+//                                }
+//                                break
+//                            case .Failure(let error):
+//                                print(error)
+//                                self.serviceCallFail()
+//                            }
+//                    }
+//                }
+//            }
+//        }
+//    }
     
     func handleServiceCallCompletion() {
 //        if self.infoServiceCallComplete && self.recipeServiceCallComplete {

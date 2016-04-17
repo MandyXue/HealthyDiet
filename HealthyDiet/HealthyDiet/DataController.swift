@@ -19,48 +19,12 @@ class DataController: NSObject {
         manageContext = appDelegate.managedObjectContext
     }
 
-    func storeDiets(diet: Diet) throws {
+    func storeDiets(name: String?, id: String?, searchText: String?, category: String?) throws {
         let newDiet = NSEntityDescription.insertNewObjectForEntityForName("DietModel", inManagedObjectContext: manageContext)
-        newDiet.setValue(diet.name, forKey: "name")
-        newDiet.setValue(diet.id, forKey: "id")
-        newDiet.setValue(diet.searchText, forKey: "searchText")
-        newDiet.setValue(diet.weight, forKey: "weight")
-        newDiet.setValue(diet.measure, forKey: "measure")
-        newDiet.setValue(diet.category, forKey: "category")
-        do {
-            try manageContext.save()
-        } catch {
-            print("Failure to save context: \(error)")
-        }
-    }
-    
-    func storeNutrients(nutrients: [Nutrient], diet: DietModel) throws {
-        
-        // Create Entity Description
-        let entityDescription = NSEntityDescription.entityForName("DietModel", inManagedObjectContext: manageContext)
-        // Initialize Batch Update Request
-        let batchUpdateRequest = NSBatchUpdateRequest(entity: entityDescription!)
-        // Configure Batch Update Request
-        batchUpdateRequest.resultType = .UpdatedObjectIDsResultType
-        // Configure Batch Update Request
-        // store weight and measure
-        if diet.weight != nil {
-            batchUpdateRequest.propertiesToUpdate = ["weight": diet.weight!]
-        }
-        if diet.measure != nil {
-            batchUpdateRequest.propertiesToUpdate = ["measure": diet.measure!]
-        }
-        // store nutrients
-        let newNutrients = NSMutableSet()
-        for nutrient in nutrients {
-            let newNutrient = NSEntityDescription.insertNewObjectForEntityForName("NutrientModel", inManagedObjectContext: manageContext)
-            newNutrient.setValue(nutrient.name, forKey: "name")
-            newNutrient.setValue(nutrient.toString(), forKey: "value")
-            newNutrients.addObject(newNutrient)
-        }
-        
-        diet.addNutrients(NSSet(set: newNutrients))
-        
+        newDiet.setValue(name, forKey: "name")
+        newDiet.setValue(id, forKey: "id")
+        newDiet.setValue(searchText, forKey: "searchText")
+        newDiet.setValue(category, forKey: "category")
         do {
             try manageContext.save()
         } catch {

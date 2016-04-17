@@ -5,18 +5,25 @@
         <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="measure" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="recipes" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="searchText" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="weight" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <relationship name="nutrients" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="NutrientModel" syncable="YES"/>
+        <relationship name="recipes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="RecipeModel" syncable="YES"/>
     </entity>
     <entity name="NutrientModel" representedClassName=".NutrientModel" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="value" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="diet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DietModel" syncable="YES"/>
     </entity>
+    <entity name="RecipeModel" representedClassName=".RecipeModel" syncable="YES">
+        <attribute name="calories" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="image" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="totalWeights" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <elements>
         <element name="DietModel" positionX="-9" positionY="-120" width="128" height="165"/>
         <element name="NutrientModel" positionX="27" positionY="-27" width="128" height="90"/>
+        <element name="RecipeModel" positionX="54" positionY="0" width="128" height="105"/>
     </elements>
 </model>
