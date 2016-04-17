@@ -88,7 +88,7 @@ class DietDetailTableViewController: UITableViewController {
                     cell.dailyValue.text = recipe.totalWeights
                     cell.imageView?.image = UIImage(named: "recipe")
                     if let image = recipe.image {
-                        // TODO: get image from url
+                        // get image from url
                         let downloader = SDWebImageDownloader.sharedDownloader()
                         downloader.downloadImageWithURL(NSURL(string: image), options: .ProgressiveDownload, progress: { (receivedSize, expectedSize) -> Void in
 //                            print("progress tracking \(receivedSize) \(expectedSize)")

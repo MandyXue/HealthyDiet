@@ -17,7 +17,7 @@ enum URL {
         case .GetDietInfo:
             return "http://api.nal.usda.gov/ndb/nutrients?nutrients=205&nutrients=204&nutrients=208&format=xml&api_key="+API_KEY.NNDB.key()+"&ndbno="
         case .GetSupermarketInfo:
-            return "http://www.supermarketapi.com/api.asmx/SearchByProductName?APIKEY=18940c8756&ItemName="
+            return "http://www.supermarketapi.com/api.asmx/SearchByProductName"
         case .SearchRecipes:
             return "https://api.edamam.com/search"
         }

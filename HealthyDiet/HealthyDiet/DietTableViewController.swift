@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import SDWebImage
 
 class DietTableViewController: UITableViewController {
     
@@ -26,10 +27,16 @@ class DietTableViewController: UITableViewController {
         self.dataModel.getDietsFromCoreData(self.page, size: self.size, resultHandler: { (dietList) -> Void in
             if let resultList = dietList {
                 self.diets = resultList
+                for diet in self.diets {
+                    DietHelper.getImageForDiet(diet.searchText!) { (imageURL) -> Void in
+                        diet.image = imageURL
+                    }
+                }
                 self.tableView.reloadData()
                 print("reload success")
             }
         })
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -48,7 +55,19 @@ class DietTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier("DietTableViewCell", forIndexPath: indexPath) as! DietTableViewCell
         cell.itemCategory.text = diets[indexPath.row].category
         cell.itemName.text = diets[indexPath.row].name
-
+        
+        // get image from url
+        if let image = diets[indexPath.row].image {
+            let downloader = SDWebImageDownloader.sharedDownloader()
+            downloader.downloadImageWithURL(NSURL(string: image), options: .ProgressiveDownload, progress: { (receivedSize, expectedSize) -> Void in
+                //                            print("progress tracking \(receivedSize) \(expectedSize)")
+                }, completed: { (image, data, error, finished) -> Void in
+                    if finished {
+                        cell.itemImage.image = image
+                    }
+            })
+        }
+        
         return cell
     }
     

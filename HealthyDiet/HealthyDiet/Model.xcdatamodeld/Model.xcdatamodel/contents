@@ -3,6 +3,7 @@
     <entity name="DietModel" representedClassName=".DietModel" syncable="YES">
         <attribute name="category" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="image" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="measure" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="searchText" optional="YES" attributeType="String" syncable="YES"/>
@@ -22,7 +23,7 @@
         <attribute name="totalWeights" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="DietModel" positionX="-9" positionY="-120" width="128" height="165"/>
+        <element name="DietModel" positionX="-9" positionY="-120" width="128" height="180"/>
         <element name="NutrientModel" positionX="27" positionY="-27" width="128" height="90"/>
         <element name="RecipeModel" positionX="54" positionY="0" width="128" height="105"/>
     </elements>

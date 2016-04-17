@@ -22,5 +22,6 @@ extension DietModel {
     @NSManaged var id: String?
     @NSManaged var recipes: NSSet?
     @NSManaged var nutrients: NSSet?
+    @NSManaged var image: String?
 
 }

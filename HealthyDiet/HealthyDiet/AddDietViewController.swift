@@ -88,7 +88,7 @@ class AddDietViewController: UITableViewController, UISearchBarDelegate, UISearc
         if (!searched) {
             // 通过预加载的内容去搜索想要的内容
             print("hasn't selected search button")
-            searchDiets(tableView.cellForRowAtIndexPath(indexPath)?.textLabel?.text, quantity: 25)
+            searchDiets(tableView.cellForRowAtIndexPath(indexPath)?.textLabel?.text, quantity: 10)
             return
         } else {
             // 将获取到的diet传给主页面并dismiss本页面
@@ -126,7 +126,7 @@ class AddDietViewController: UITableViewController, UISearchBarDelegate, UISearc
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         if searchController.searchBar.text != nil {
-            self.searchDiets(nil,quantity: 25)
+            self.searchDiets(nil,quantity: 10)
         }
     }
     
