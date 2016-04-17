@@ -17,7 +17,7 @@
     </entity>
     <entity name="RecipeModel" representedClassName=".RecipeModel" syncable="YES">
         <attribute name="calories" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="image" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="image" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="totalWeights" optional="YES" attributeType="String" syncable="YES"/>
     </entity>

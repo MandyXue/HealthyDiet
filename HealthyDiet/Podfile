@@ -9,6 +9,7 @@ pod 'Alamofire', '3.2'
 pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON.git'
 pod 'SWXMLHash', '~> 2.3.0'
 pod 'PKHUD'
+pod 'SDWebImage'
 
 end
 

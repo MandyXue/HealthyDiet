@@ -16,7 +16,7 @@ extension RecipeModel {
 
     @NSManaged var name: String?
     @NSManaged var calories: String?
-    @NSManaged var image: NSData?
+    @NSManaged var image: String?
     @NSManaged var totalWeights: String?
 
 }

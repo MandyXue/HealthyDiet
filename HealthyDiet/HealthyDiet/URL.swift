@@ -31,9 +31,9 @@ enum API_KEY {
         case .NNDB:
             return "5OMJXRPPVdX7LrXDQucMslEiYy9hVy4X0fsKE7v8"
         case .Edamam_Id:
-            return "56048e5f"
+            return "ecde4f7c"
         case .Edamam_Key:
-            return "3504404f01497513c55214a286ef2300"
+            return "8ade7afbc8892d421a2f8e460768ed91"
         case .Supermarket:
             return "18940c8756"
         }
