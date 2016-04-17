@@ -9,7 +9,7 @@
 import Foundation
 
 enum URL {
-    case SearchDiet, GetDietInfo, GetSupermarketInfo, SearchRecipes
+    case SearchDiet, GetDietInfo, GetSupermarketInfo, SearchRecipes, GetRecipesByIngredients
     func url() -> String {
         switch self {
         case .SearchDiet:
@@ -20,12 +20,14 @@ enum URL {
             return "http://www.supermarketapi.com/api.asmx/SearchByProductName"
         case .SearchRecipes:
             return "https://api.edamam.com/search"
+        case .GetRecipesByIngredients:
+            return "http://api.recipeon.us/2.0/recipe/suggest/"+API_KEY.Recipeon.key()+"/0/30/"
         }
     }
 }
 
 enum API_KEY {
-    case Edamam_Id, Edamam_Key, Supermarket, NNDB
+    case Edamam_Id, Edamam_Key, Supermarket, NNDB, Recipeon
     func key() -> String {
         switch self {
         case .NNDB:
@@ -36,6 +38,8 @@ enum API_KEY {
             return "8ade7afbc8892d421a2f8e460768ed91"
         case .Supermarket:
             return "18940c8756"
+        case .Recipeon:
+            return "57138e53a00a6d3b0400002f"
         }
     }
 }
