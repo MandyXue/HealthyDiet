@@ -10,6 +10,7 @@ import UIKit
 import SWXMLHash
 import Alamofire
 import PKHUD
+import CoreData
 import SwiftyJSON
 
 class DietDetailTableViewController: UITableViewController {
@@ -31,10 +32,11 @@ class DietDetailTableViewController: UITableViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
-        if (diet?.nutrients == nil && diet?.recipes == nil) {
+//        if (diet?.nutrients == nil && diet?.recipes == nil) {
+        if (diet?.nutrients?.count == 0) {
             HUD.show(.Progress)
             fetchDietInfo()
-            searchRecipes()
+//            searchRecipes()
         }
     }
 
@@ -53,9 +55,9 @@ class DietDetailTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         if (section == 2) {
-            if diet?.recipes != nil {
-                return (diet?.recipes?.count)!
-            }
+//            if diet?.recipes != nil {
+//                return (diet?.recipes?.count)!
+//            }
             return 0
         } else if(section == 0) {
             return attributeKey.count
@@ -71,13 +73,13 @@ class DietDetailTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if (indexPath.section == 2) {
             let cell = tableView.dequeueReusableCellWithIdentifier("recipeCell", forIndexPath: indexPath) as! RecipeTableViewCell
-            if (diet?.recipes != nil) {
-                if let recipe = diet?.recipes?.objectAtIndex(indexPath.row) as? Recipe {
-                    cell.recipeName.text = recipe.name
-                    cell.caloriesDetail.text = recipe.caloriesInString()
-                    cell.dailyValue.text = recipe.totalWeightsInString()
-                }
-            }
+//            if (diet?.recipes != nil) {
+//                if let recipe = diet?.recipes?.objectAtIndex(indexPath.row) as? Recipe {
+//                    cell.recipeName.text = recipe.name
+//                    cell.caloriesDetail.text = recipe.caloriesInString()
+//                    cell.dailyValue.text = recipe.totalWeightsInString()
+//                }
+//            }
             return cell
         } else if(indexPath.section == 0) {
             let cell = tableView.dequeueReusableCellWithIdentifier("attributeCell", forIndexPath: indexPath) as! DietAttributeTableViewCell
@@ -96,9 +98,10 @@ class DietDetailTableViewController: UITableViewController {
         } else if(indexPath.section == 1) {
             let cell = tableView.dequeueReusableCellWithIdentifier("attributeCell", forIndexPath: indexPath) as! DietAttributeTableViewCell
             if (diet?.nutrients != nil) {
-                if let nutrient = diet?.nutrients?.objectAtIndex(indexPath.row) as? Nutrient {
+                if let nutrientArray = diet?.nutrients?.allObjects as? [NutrientModel] {
+                    let nutrient = nutrientArray[indexPath.row]
                     cell.attributeName.text = nutrient.name
-                    cell.attributeDetail.text = nutrient.toString()
+                    cell.attributeDetail.text = nutrient.value
                 }
             }
             return cell
@@ -149,7 +152,7 @@ class DietDetailTableViewController: UITableViewController {
     
     func fetchDietInfo() {
         if diet != nil {
-            if diet?.nutrients == nil {
+            if diet?.nutrients?.count == 0 {
                 if let nbno = diet?.id {
                     //                HUD.show(.Progress)
                     Alamofire.request(.GET, URL.GetDietInfo.url()+nbno)
@@ -170,17 +173,25 @@ class DietDetailTableViewController: UITableViewController {
                                     }
                                     
                                     // get nutrients
-                                    self.diet?.nutrients = NSMutableArray()
                                     for element in xml["report"]["foods"]["food"]["nutrients"]["nutrient"] {
                                         if let name = element.element?.attributes["nutrient"] {
                                             if let unit = element.element?.attributes["unit"] {
                                                 if let value = element.element?.attributes["value"] {
-                                                    self.diet?.nutrients?.addObject(Nutrient(name: name, unit: unit, value: value))
+                                                    let entity = NSEntityDescription.entityForName("NutrientModel", inManagedObjectContext: self.dataModel.manageContext)
+                                                    let newNutrient = NutrientModel(entity: entity!, insertIntoManagedObjectContext: self.dataModel.manageContext)
+                                                    newNutrient.value = value+" "+unit
+                                                    newNutrient.name = name
+                                                    self.diet?.addNutrientObject(newNutrient)
                                                 }
                                             }
                                         }
                                     }
-                                    self.diet?.setValue(self.diet?.nutrients, forKey: "nutrients")
+                                    // refresh data in core data
+                                    do {
+                                        try self.dataModel.manageContext.save()
+                                    } catch {
+                                        print("Failure to save context: \(error)")
+                                    }
                                     self.infoServiceCallComplete = true
                                     self.handleServiceCallCompletion()
                                 } else {
@@ -218,7 +229,8 @@ class DietDetailTableViewController: UITableViewController {
                                 if let value = response.result.value {
                                     let json = JSON(value)
                                     let recipes = json["hits"]
-                                    self.diet?.recipes = NSMutableArray()
+                                    let recipesArray = NSMutableArray()
+                                    
                                     for (_,recipe):(String, JSON) in recipes {
                                         if let name = recipe["recipe"]["label"].string {
                                             if let calories = recipe["recipe"]["calories"].float {
@@ -227,12 +239,13 @@ class DietDetailTableViewController: UITableViewController {
                                                     if let imageURL = recipe["recipe"]["image"].string {
                                                         newRecipe.setImage(imageURL)
                                                     }
-                                                    self.diet?.recipes?.addObject(Recipe(name: name, calories: calories, totalWeights: weight))
+                                                    recipesArray.addObject(Recipe(name: name, calories: calories, totalWeights: weight))
                                                 }
                                             }
                                         }
                                         
                                     }
+//                                    self.diet?.nutrients = NSArray(array: recipesArray)
                                     self.diet?.setValue(self.diet?.nutrients, forKey: "nutrients")
                                     self.recipeServiceCallComplete = true
                                     self.handleServiceCallCompletion()
@@ -251,16 +264,10 @@ class DietDetailTableViewController: UITableViewController {
     }
     
     func handleServiceCallCompletion() {
-        if self.infoServiceCallComplete && self.recipeServiceCallComplete {
+//        if self.infoServiceCallComplete && self.recipeServiceCallComplete {
+        if self.infoServiceCallComplete{
             // Handle the fact that you're finished
-            
             self.tableView.reloadData()
-            do {
-                try self.dataModel.updateDiet(self.diet!)
-                print("success save")
-            } catch {
-                print("\(error)")
-            }
             HUD.flash(.Success)
         }
     }

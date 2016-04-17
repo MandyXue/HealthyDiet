@@ -1,5 +1,5 @@
 //
-//  DietModel+CoreDataProperties.swift
+//  NutrientModel+CoreDataProperties.swift
 //  HealthyDiet
 //
 //  Created by MandyXue on 16/4/17.
@@ -12,15 +12,9 @@
 import Foundation
 import CoreData
 
-extension DietModel {
+extension NutrientModel {
 
-    @NSManaged var category: String?
-    @NSManaged var measure: String?
     @NSManaged var name: String?
-    @NSManaged var weight: NSNumber?
-    @NSManaged var searchText: String?
-    @NSManaged var id: String?
-    @NSManaged var recipes: NSObject?
-    @NSManaged var nutrients: NSSet?
+    @NSManaged var value: String?
 
 }
